@@ -1,0 +1,119 @@
+<!DOCUMENT html>
+<html>
+<head>
+	<title>HoneyPot</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	<link rel="stylesheet" href="style.css">
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script></head>
+</head>
+<body>
+	<header>
+		<div class="navbar navbar-dark bg-dark-green box-shadow">
+			<div class="container d-flex justify-content-between">
+				<a href="#" class="navbar-brand d-flex align-items-center">
+					<strong>HoneyPot</strong>
+				</a>
+				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarHeader" aria-controls="navbarHeader" aria-expanded="true" aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+			</div>
+		</div>
+   </header>
+		
+		
+	<div class="splash">
+		<div class="splash-section">
+			<h1>HoneyPot</h1>
+			<h2>A Neural Net Based Friend Predictor</h2>
+		</div>
+	</div>
+	
+	
+	<div class="container">
+		<div class="alert alert-warning" role="alert">
+			This app is still gathering data so predictions may still be inaccurate
+		</div>
+	</div>
+	
+	<div class="container">
+		<form>
+		  <div class="form-group">
+			<label for="formGroupExampleInput">Enter your first and last name:</label>
+			<input type="text" id="question1" class="form-control" id="formGroupExampleInput" placeholder="">
+		  </div>
+		  <div class="form-group">
+			<label for="formGroupExampleInput">What is your favorite subject in school?</label>
+			<input type="text" id="question2" class="form-control" id="formGroupExampleInput" placeholder="">
+		  </div>
+		  <div class="form-group">
+			<label for="formGroupExampleInput">What is your favorite book?</label>
+			<input type="text" id="question3" class="form-control" id="formGroupExampleInput" placeholder="">
+		  </div>
+		  <div class="form-group">
+			<label for="formGroupExampleInput">What is your favorite restaurant?</label>
+			<input type="text" id="question4" class="form-control" id="formGroupExampleInput" placeholder="">
+		  </div>
+		  <div class="form-group">
+			<label for="formGroupExampleInput">What country would you most like to visit?</label>
+			<input type="text" id="question5" class="form-control" id="formGroupExampleInput" placeholder="">
+		  </div>
+		</form>
+		<div class="col-auto">
+			<button type="submit" id="btnSubmit" class="btn btn-primary mb-2" onclick="submit()">Submit</button>
+		</div>
+		
+		<div id="submission" class="submission">
+			<h3 id="matchText">You matched with: </h3>
+			<div class="btn-group" role="group" aria-label="Basic example">
+			  <button type="button" class="btn btn-secondary btn-confirm">They're my friend!</button>
+			  <button type="button" class="btn btn-secondary btn-deny">I dont know them :(</button>
+			</div>
+		</div>
+	</div>
+
+
+	<footer class="page-footer font-small special-color-dark pt-4">
+	  <div class="footer-copyright text-center py-3">2019 CodeDay - Ian Dougherty - ianedougherty01@gmail.com</div>
+	</footer>
+	
+	<script>
+		var btnSubmit = document.getElementById("btnSubmit");
+		var submission = document.getElementById("submission");
+		var matchText = document.getElementById("matchText");
+		var q1 = document.getElementById("question1");
+		var q2 = document.getElementById("question2");
+		var q3 = document.getElementById("question3");
+		var q4 = document.getElementById("question4");
+		var q5 = document.getElementById("question5");
+		var userData = [];
+		
+		async function submit() {
+			btnSubmit.style.visibility = "hidden";
+			submission.style.visibility = "visible";
+			
+			userData.push(q1.value);
+			userData.push(q2.value);
+			userData.push(q3.value);
+			userData.push(q4.value);
+			userData.push(q5.value);
+			console.log(userData);
+			
+			const url = new URL("https://script.google.com/macros/s/AKfycbxl40EcwseRZEX5BkmjBisngTtXBl3kvrPe0Vj_uWwTQVkmnLo2/exec");
+			
+			for (const value of userData) {
+				url.searchParams.append("value", value);
+			}
+			
+			console.log(url);
+			
+			const response = await fetch(url, {method: 'POST'});
+			const responseJson = await response.json();
+			console.log(responseJson);
+			
+			matchText.innerHTML = "You matched with: " + responseJson[Math.floor(Math.random()*responseJson.length)][0];
+		}
+	</script>
+</body>
+</html>
